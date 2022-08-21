@@ -20,7 +20,7 @@ contract NFTContract is ERC721, Ownable {
     uint256 public maxMintAmountPerTx = 5;
 
     bool public paused = true;
-    bool public revealed = false;
+
 
     constructor() ERC721("NFT Collection Name","NCN"){
         setHiddenMetadataUri("ipfs://__CID__/hiddenMetadata.json");
@@ -53,6 +53,12 @@ function setMaxMintAmountPerTx( uint256 _maxMintAmountPerTx) public onlyOwner{
 function setPaused(bool _state) public onlyOwner{
     paused = _paused
 }
-function setRevealed(bool _state) public onlyOwner{
-    revealed = _revealed;
+
+
+function totalSupply() public view returns (uint256){
+    return supply.current();
+}
+
+function _baseURI() internal view virtual override returns (string memory){
+    return uriPrefix;
 }
