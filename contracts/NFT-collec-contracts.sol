@@ -22,7 +22,9 @@ contract NFTContract is ERC721, Ownable {
     bool public paused = true;
     bool public revealed = false;
 
-
+    constructor() ERC721("NFT Collection Name","NCN"){
+        setHiddenMetadataUri("ipfs://__CID__/hiddenMetadata.json");
+    }
 }
 
 function setUriPrefix(string memory _uriPrefix) public onlyOwner{
