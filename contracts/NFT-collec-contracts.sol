@@ -19,12 +19,18 @@ contract NFTContract is ERC721, Ownable {
     uint256 public maxSupply = 100;
     uint256 public maxMintAmountPerTx = 5;
 
-    bool public paused = true;
+    bool public paused = true; //contract is paused
 
 
     constructor() ERC721("NFT Collection Name","NCN"){
         setHiddenMetadataUri("ipfs://__CID__/hiddenMetadata.json");
     }
+}
+
+modifier mintCompliance(uint256 _mintAmount){
+    require(
+        //TODO mint compliance
+    )
 }
 
 function setUriPrefix(string memory _uriPrefix) public onlyOwner{
@@ -62,3 +68,13 @@ function totalSupply() public view returns (uint256){
 function _baseURI() internal view virtual override returns (string memory){
     return uriPrefix;
 }
+
+function tokenURI(uint256 _tokenId) public view vritual override returns (string memory){
+    require(_exists(_tokenId),
+    "ERC721Metadata: URI query for nonexistent token"
+    );
+    string memory currentBaseURI = _baseURI();
+    return
+        bytes(currentBaseURI).length > 0 && string(abi.encodePacked(currentBaseURI, _tokenId.toString(), uriSuffix));
+}
+
