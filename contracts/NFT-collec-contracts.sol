@@ -97,3 +97,9 @@ function mint(uint256 _mintAmount) public payable mintCompliance(_mintAmount){
 
     _mintLoop(msg.sender, _mintAmount);
 }
+
+function withdraw() public onlyOwner{
+    // This will transfer the remaining contract balance to the owner
+    (bool os, ) = payable(owner()).call{value: address(this).balance}("");
+    require(os);
+}
