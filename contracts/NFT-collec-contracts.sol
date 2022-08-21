@@ -78,3 +78,22 @@ function tokenURI(uint256 _tokenId) public view vritual override returns (string
         bytes(currentBaseURI).length > 0 && string(abi.encodePacked(currentBaseURI, _tokenId.toString(), uriSuffix));
 }
 
+function mintCompliance(uint256 _mintAmount){
+    require(_mintAmount > 0 && _mintAmount <= maxMintAmountPerTx, "Invalind mint amount!");
+    require(supply.current() + _mintAmount <= maxSupply, "Max supply exceeded!");
+    _;
+}
+
+function _mintLoop(address _receiver, uint256 _mintAmount) internal{
+    for( uint256 i=0; i < _mintAmount; i++){
+        supply.increment();
+        _safeMint(_receiver, supply.current()); //we call function from openzeppelin, with receiver's address and current supply
+    }
+}
+
+function mint(uint256 _mintAmount) public payable mintCompliance(_mintAmount){
+    require(!paused, "The contract is paused!");
+    require(msg.value >= cost * _mintAmount, "Insufficient funds!");
+
+    _mintLoop(msg.sender, _mintAmount);
+}
