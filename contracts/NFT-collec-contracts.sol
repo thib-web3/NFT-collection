@@ -28,9 +28,9 @@ contract NFTContract is ERC721, Ownable {
 }
 
 modifier mintCompliance(uint256 _mintAmount){
-    require(
-        //TODO mint compliance
-    )
+    require(_mintAmount > 0 && _mintAmount <= maxMintAmountPerTx, "Invalind mint amount!");
+    require(supply.current() + _mintAmount <= maxSupply, "Max supply exceeded!");
+    _;
 }
 
 function setUriPrefix(string memory _uriPrefix) public onlyOwner{
@@ -78,11 +78,6 @@ function tokenURI(uint256 _tokenId) public view vritual override returns (string
         bytes(currentBaseURI).length > 0 && string(abi.encodePacked(currentBaseURI, _tokenId.toString(), uriSuffix));
 }
 
-function mintCompliance(uint256 _mintAmount){
-    require(_mintAmount > 0 && _mintAmount <= maxMintAmountPerTx, "Invalind mint amount!");
-    require(supply.current() + _mintAmount <= maxSupply, "Max supply exceeded!");
-    _;
-}
 
 function _mintLoop(address _receiver, uint256 _mintAmount) internal{
     for( uint256 i=0; i < _mintAmount; i++){
