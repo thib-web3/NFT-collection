@@ -1,4 +1,7 @@
-# Simple NFT Collection contract
+# 🖼️ Simple NFT Collection contract 🖼️ 
 
-🖼️ NFT Collection smart contract made with Solidity and Hardhat 🖼️
+🛠️ STACKS :
+- Solidity
+- Hardhat 
+- TypeScript
 
